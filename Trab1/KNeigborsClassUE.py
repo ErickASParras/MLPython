@@ -15,7 +15,12 @@ class KNeigborsClassUE:
 
     def fit(self,X,Y):
         self.X_train = X
-        self.Y_train = Y
+        uniques = np.unique(Y)
+        # Making a temporary dictonary where all unique values have a increasing number from 0
+        values = {value:number for number, value in enumerate(uniques)}
+        # Changing Y so it has the numbers instead of names
+        Yfinal = np.vectorize(values.get)(Y)
+        self.Y_train = Yfinal
     
     def predict(self,X):
         predictions = [self.predictpriv(t0) for t0 in X]

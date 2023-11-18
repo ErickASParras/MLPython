@@ -16,14 +16,14 @@ X_train, X_test, y_train, y_test = train_test_split(X,Y,test_size=0.5,random_sta
 # plt.scatter(X[:,2],X[:,3], c=Y, cmap=cmap, edgecolor='k',s=20)
 # plt.show()
 
-data=pd.read_csv('dadosnumericos/iris.csv',header=None,skiprows=1)
-print(data.head())
+# data=pd.read_csv('dadosnumericos/iris.csv',header=None,skiprows=1)
+# print(data.head())
 
-data1=pd.read_csv('dadosnumericos/rice.csv',header=None,skiprows=1)
-print(data1.head())
+# data1=pd.read_csv('dadosnumericos/rice.csv',header=None,skiprows=1)
+# print(data1.head())
 
-data2=pd.read_csv('dadosnumericos/wdbc.csv',header=None,skiprows=1)
-print(data2.head())
+# data2=pd.read_csv('dadosnumericos/wdbc.csv',header=None,skiprows=1)
+# print(data2.head())
 
 
 
