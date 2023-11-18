@@ -20,9 +20,11 @@ class KNeigborsClassUE:
         values = {value:number for number, value in enumerate(uniques)}
         # Changing Y so it has the numbers instead of names
         Yfinal = np.vectorize(values.get)(Y)
-        self.Y_train = Yfinal
+        #makes the 2d array into a 1d arrays like the target from sckitlearn
+        self.Y_train = Yfinal.ravel()
     
     def predict(self,X):
+        
         predictions = [self.predictpriv(t0) for t0 in X]
         self.predictions = predictions
         return predictions
@@ -31,6 +33,12 @@ class KNeigborsClassUE:
         # Verify is the predictions have been made using predict()
         if self.predictions == None :
             return -1
+        uniques = np.unique(Y)
+        # Making a temporary dictonary where all unique values have a increasing number from 0
+        values = {value:number for number, value in enumerate(uniques)}
+        # Changing Y so it has the numbers instead of names
+        Y = np.vectorize(values.get)(Y)
+        Y = Y.ravel()
         pointsright = np.sum(self.predictions == Y ) / len(Y)
         return pointsright
     
@@ -53,4 +61,5 @@ class KNeigborsClassUE:
         k_labels = [self.Y_train[i] for i in k_indices]
 
         # Counting each to choose the correct label
+        #print(k_labels)
         return Counter(k_labels).most_common()[0][0]
