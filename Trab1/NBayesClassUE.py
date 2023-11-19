@@ -12,12 +12,14 @@ class NBayesClassUE:
         
     def fit(self,X,Y):
         self.X_train = X
+        # Making each row of X to become a key for their corresponding Y value
+        self.dic = [{tuple(Xrow): Yvalue} for Xrow, Yvalue in zip(X, Y)]        
         self.uniques = np.unique(Y)
         # Making a temporary dictonary where all unique values have a increasing number from 0
         values = {value:number for number, value in enumerate(self.uniques)}
         # Changing Y so it has the numbers instead of names
         Yfinal = np.vectorize(values.get)(Y)
-        #makes the 2d array into a 1d arrays like the target from sckitlearn
+        # Makes the 2d array into a 1d arrays like the target from sckitlearn
         self.Y_train = Yfinal.ravel()
         return
     
@@ -46,6 +48,6 @@ class NBayesClassUE:
 
 
         self.alpha+(X)/(np.unique(self.X_train)*self.alpha+len(self.Y_train))#ESSE Y PRECISA SER ALTERADO PARA CONTAR APENAS O Y USADO AGORA
-
+        
         pass
     

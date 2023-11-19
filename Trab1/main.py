@@ -1,5 +1,7 @@
 from KNeigborsClassUE import KNeigborsClassUE
 from NBayesClassUE import NBayesClassUE
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
 from sklearn import datasets
 import numpy as np
 import matplotlib.pyplot as plt
@@ -47,9 +49,9 @@ print(Itest0.score(y_testdf0))
 
 Wtest0 = KNeigborsClassUE(k=1,p=1)
 Wtest0.fit(X_traindf2,y_traindf2)
-Wtest0.predict(X_testdf2)
+Wtest0.predict(X_traindf2)
 print("Wdbc score : ")
-print(Wtest0.score(y_testdf2))
+print(Wtest0.score(y_traindf2))
 
 
 #####################################################################
@@ -71,10 +73,14 @@ data5Y = np.array(data5.iloc[:,-1:].values.tolist())
 X_traindf5, X_testdf5, y_traindf5, y_testd5 = train_test_split(data5X,data5Y,test_size=0.5,random_state=1234)
 
 
-meow = KNeigborsClassUE(k=3,p=1)
-meow.fit(X_train,y_train)
-predictions = meow.predict(X_test)
-# print(X_train)
-#print(predictions)
-#print(predictions ==test0.predict(X_testdf0) )
+# meow = KNeigborsClassUE(k=3,p=2)
+# meow.fit(X_train,y_train)
+# predictions = meow.predict(X_test)
+# #print(predictions)
 # print(meow.score(y_test))
+# teste = KNeighborsClassifier(n_neighbors=3)
+# knn_classifier = KNeighborsClassifier(n_neighbors=3)
+# knn_classifier.fit(X_train, y_train)
+# y_pred = knn_classifier.predict(X_test)
+# accuracy = accuracy_score(y_test, y_pred)
+# print(accuracy)
