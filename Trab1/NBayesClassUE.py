@@ -13,6 +13,7 @@ class NBayesClassUE:
         
     def fit(self,X,Y):  
         self.X_train = X
+        self.Ytrain = Y
         self.length = len(X)
         # Making each row of X to become a key for their corresponding Y value
         self.dic = {tuple(Xrow): Yvalue for Xrow, Yvalue in zip(X, Y)}
@@ -32,57 +33,40 @@ class NBayesClassUE:
         # Getting the prior probability for each class
         print(self.Nclasses)
         for i in self.uniques:
-            print(self.Nclasses.get((str(i),)))
-            print(list(self.dic.values()).count(i))
-            self.priors.append(((self.Nclasses.get((str(i),))))/len(self.X_train))
+            # Transforming i into a string and into a tuple to match how Nclasses is stored
+            self.priors.append((self.Nclasses.get((str(i),))+self.alpha)/len(self.X_train)+(self.alpha*self.length))
         print(self.priors)
-        # # Making a temporary dictonary where all unique values have a increasing number from 0
-        # values = {value:number for number, value in enumerate(self.uniques)}
-        # # Changing Y so it has the numbers instead of names
-        # Yfinal = np.vectorize(values.get)(Y)
-        # # Makes the 2d array into a 1d arrays like the target from sckitlearn
-        # self.Y_train = Yfinal.ravel()
         self.mean ={}
         self.variance ={}
-        for index, t0 in enumerate(self.uniques):            
-                # print(t0)
-                # print(self.dic[index])
-                # Xt0 = self.dic[index] == t0
-                # self.mean[index, :] = np.mean(Xt0,axis=0)
-                # self.variance[index, :] = np.var(Xt0,axis=0)
-                # self.priors[index] = np.array(Xt0).shape[0]
-                u = 1
-        
-        # for i in self.dic.index(i):
-        #     print(i)
-        print(self.mean)
-        print("-------------------\n")
-        print(self.variance)
-        print("-------------------\n")
-        print(self.priors)
-        print("-------------------\n")
         return
-    
-    def calculate_prior(self, Y):
-        prior = []
-        for i in self.uniques:
-            count_i = np.sum(np.all(self.X_train == i, axis=1))
-            prior.append(count_i / len(self.X_train))        
-        print(prior)
-        return prior
 
     def score(self,Y):
         # Verify is the predictions have been made using predict()
         if self.predictions == None :
             return -1
-        uniques = np.unique(Y)
-        # Making a temporary dictonary where all unique values have a increasing number from 0
-        values = {value:number for number, value in enumerate(uniques)}
-        # Changing Y so it has the numbers instead of names
-        Y = np.vectorize(values.get)(Y)
-        Y = Y.ravel()
+        # uniques = np.unique(Y)
+        # # Making a temporary dictonary where all unique values have a increasing number from 0
+        # values = {value:number for number, value in enumerate(uniques)}
+        # # Changing Y so it has the numbers instead of names
+        # Y = np.vectorize(values.get)(Y)
+        # Y = Y.ravel()
+        # print(Y)
+        # print(self.predict)
         pointsright = np.sum(self.predictions == Y ) / len(Y)
         return pointsright
+    
+    def lidstone(self,x,y):
+        for t0 in x:
+            # print(t0)
+            # print(t0 in next(iter(self.dic.keys())) )
+            # # print(y)
+             # print(t0)
+            # print(self.dic.get(t0))
+            # print(np.sum(self.dic.get(t0) == y))
+            # print("lidstone")
+            
+            result = ((t0 in next(iter(self.dic.keys())))+self.alpha)/(self.Nclasses.get(y)+(self.alpha*len(x)))
+        return result
 
     def predict(self,X):
         
@@ -93,9 +77,17 @@ class NBayesClassUE:
 
     def predictpriv(self,X):
 
+        results = []
+        for idx, c in enumerate(self.Nclasses):
+            prior = np.log(self.priors[idx])
+            post = np.sum(np.log(self.lidstone(X,c)))
+            t0 = prior+post
+            results.append(t0)
+        #self.alpha+(X)/(np.unique(self.X_train)*self.alpha+len(self.Y_train))#ESSE Y PRECISA SER ALTERADO PARA CONTAR APENAS O Y USADO AGORA
+        print(results)
+        finalidx=np.argmax(results)
+        # print(list(self.Nclasses)[finalidx])
+        return list(self.Nclasses.keys())[finalidx]
 
 
-        self.alpha+(X)/(np.unique(self.X_train)*self.alpha+len(self.Y_train))#ESSE Y PRECISA SER ALTERADO PARA CONTAR APENAS O Y USADO AGORA
-        
-        pass
     
